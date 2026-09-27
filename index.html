@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burger Talaud 42 — Commander</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #08070a;
+    --char: #171410;
+    --yellow: #ffc530;
+    --yellow-deep: #e8a800;
+    --flame: #e8491d;
+    --cream: #f4ecd8;
+    --cream-dim: #cdc2a6;
+    --line: #3a352c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Work Sans', sans-serif;
+    line-height:1.5;
+    padding-bottom: 90px;
+  }
+  h1,h2,h3, .brand{
+    font-family:'Permanent Marker', cursive;
+    font-weight:400;
+    letter-spacing: 0.5px;
+  }
+  a{color:inherit;}
+
+  /* ---------- HEADER ---------- */
+  header.top{
+    padding: 34px 20px 26px;
+    text-align:left;
+    border-bottom: 2px solid var(--line);
+    background:
+      radial-gradient(120% 140% at 10% -10%, rgba(255,197,48,0.10), transparent 55%),
+      var(--black);
+  }
+  .top .kicker{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    color: var(--flame);
+    margin:0 0 6px;
+    font-weight:700;
+  }
+  .top h1{
+    font-size: clamp(34px, 9vw, 52px);
+    color: var(--yellow);
+    margin:0 0 6px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    line-height:1.05;
+  }
+  .top p.tag{
+    margin:0;
+    color: var(--cream-dim);
+    font-size:15px;
+    max-width:34ch;
+  }
+
+  /* ---------- SECTION HEADINGS ---------- */
+  main{max-width:640px; margin:0 auto; padding: 0 16px;}
+  section{margin-top:44px;}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:18px;
+    padding-bottom:10px;
+    border-bottom: 2px solid var(--line);
+  }
+  .sec-head h2{
+    font-size: clamp(24px,6vw,30px);
+    color: var(--cream);
+    margin:0;
+  }
+  .sec-head .mark{
+    color:var(--yellow);
+  }
+  .sec-head .count{
+    margin-left:auto;
+    font-size:12px;
+    color:var(--cream-dim);
+    font-family:'Work Sans';
+    white-space:nowrap;
+  }
+
+  /* ---------- BURGER CARDS (feature) ---------- */
+  .burger-grid{ display:flex; flex-direction:column; gap:16px; }
+  .burger-card{
+    border: 1.5px solid var(--line);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%);
+    padding:16px;
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:12px;
+    position:relative;
+  }
+  .burger-card h3{
+    font-size:20px;
+    color:var(--yellow);
+    margin:0 0 6px;
+  }
+  .burger-card ul{
+    margin:0 0 10px;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--cream-dim);
+  }
+  .burger-card ul li{margin-bottom:2px;}
+  .row-buy{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  select.opt{
+    background: var(--char);
+    color: var(--cream);
+    border:1px solid var(--line);
+    padding:8px 10px;
+    font-family:'Work Sans';
+    font-size:13px;
+    max-width:100%;
+  }
+  .price-tag{
+    font-family:'Permanent Marker';
+    color:var(--black);
+    background: var(--yellow);
+    padding: 6px 14px 4px;
+    font-size:19px;
+    transform: rotate(-3deg);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.55);
+    white-space:nowrap;
+    height:fit-content;
+  }
+  button.add{
+    background: var(--flame);
+    color: var(--cream);
+    border:none;
+    font-family:'Work Sans';
+    font-weight:700;
+    font-size:13px;
+    padding:9px 14px;
+    cursor:pointer;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+    transition: transform 0.08s ease;
+  }
+  button.add:active{ transform: translate(2px,2px); box-shadow:1px 1px 0 rgba(0,0,0,0.5); }
+
+  /* ---------- COMPACT LIST ROWS (desserts/sachets/etc) ---------- */
+  .row-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .row-item:last-child{border-bottom:none;}
+  .row-item .name{
+    font-weight:600;
+    font-size:15px;
+    color:var(--cream);
+    flex:1 1 140px;
+  }
+  .row-item .sub{
+    display:block;
+    font-weight:400;
+    font-size:12px;
+    color:var(--cream-dim);
+  }
+  .row-item .price{
+    font-family:'Permanent Marker';
+    color:var(--yellow);
+    font-size:16px;
+    min-width:60px;
+    text-align:right;
+  }
+
+  /* ---------- CART DRAWER ---------- */
+  .cart-bar{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    background: var(--yellow);
+    color:var(--black);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 14px 18px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow: 0 -3px 0 rgba(0,0,0,0.4);
+    z-index:40;
+  }
+  .cart-bar span.small{font-size:12px; font-weight:500; display:block;}
+  .cart-bar .cta{
+    background:var(--black);
+    color:var(--yellow);
+    padding:9px 16px;
+    font-family:'Permanent Marker';
+    font-size:15px;
+  }
+  .overlay{
+    position:fixed; inset:0;
+    background: rgba(0,0,0,0.6);
+    display:none;
+    z-index:50;
+  }
+  .overlay.open{display:block;}
+  .drawer{
+    position:fixed;
+    right:0; top:0; bottom:0;
+    width:min(420px, 92vw);
+    background: var(--char);
+    border-left: 3px solid var(--yellow);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    z-index:51;
+    display:flex;
+    flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    padding:20px;
+    border-bottom:2px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .drawer-head h2{color:var(--yellow); font-size:22px; margin:0;}
+  .close-x{
+    background:none;border:none;color:var(--cream);font-size:22px;cursor:pointer;
+  }
+  .drawer-body{
+    padding:16px 20px;
+    overflow-y:auto;
+    flex:1;
+  }
+  .cart-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .cart-line .info{font-size:13.5px;}
+  .cart-line .info b{color:var(--cream);}
+  .cart-line .info .meta{display:block; font-size:11.5px; color:var(--cream-dim);}
+  .qty-ctrl{display:flex; align-items:center; gap:6px;}
+  .qty-ctrl button{
+    background:var(--black); color:var(--yellow); border:1px solid var(--line);
+    width:26px; height:26px; cursor:pointer; font-size:14px;
+  }
+  .qty-ctrl span{min-width:16px; text-align:center; font-size:13px;}
+  .cart-empty{color:var(--cream-dim); font-size:14px; padding:20px 0;}
+
+  .drawer-foot{
+    padding:18px 20px 22px;
+    border-top:2px solid var(--line);
+  }
+  .total-row{
+    display:flex; justify-content:space-between;
+    font-size:18px; margin-bottom:14px;
+  }
+  .total-row b{color:var(--yellow); font-family:'Permanent Marker'; font-size:22px;}
+
+  fieldset{border:none; padding:0; margin:0 0 14px;}
+  .mode-toggle{display:flex; gap:8px; margin-bottom:14px;}
+  .mode-toggle label{
+    flex:1; text-align:center; padding:9px 6px; border:1px solid var(--line);
+    font-size:13px; cursor:pointer; color:var(--cream-dim);
+  }
+  .mode-toggle input{display:none;}
+  .mode-toggle input:checked + span{color:var(--black);}
+  .mode-toggle label:has(input:checked){ background:var(--yellow); color:var(--black); border-color:var(--yellow);}
+
+  input[type="text"], input[type="tel"], textarea{
+    width:100%;
+    background:var(--black);
+    border:1px solid var(--line);
+    color:var(--cream);
+    padding:10px;
+    font-family:'Work Sans';
+    font-size:14px;
+    margin-bottom:10px;
+  }
+  label.field-label{font-size:12px; color:var(--cream-dim); display:block; margin-bottom:4px;}
+  #addr-wrap{display:none;}
+
+  .send-btn{
+    width:100%;
+    background: var(--flame);
+    color:var(--cream);
+    border:none;
+    font-family:'Permanent Marker';
+    font-size:18px;
+    padding:13px;
+    cursor:pointer;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  }
+  .send-btn:disabled{opacity:0.4; cursor:not-allowed;}
+  .foot-note{font-size:11px; color:var(--cream-dim); margin-top:10px; text-align:center;}
+
+  footer.bottom{
+    text-align:center;
+    padding:40px 20px 20px;
+    color:var(--cream-dim);
+    font-size:13px;
+  }
+  footer.bottom .brand{color:var(--yellow); font-size:22px; display:block; margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="kicker">Des burgers qui envoient !</p>
+  <h1>Burger Talaud 42</h1>
+  <p class="tag">Composez votre commande ci-dessous, on la reçoit direct par WhatsApp — à emporter ou livré.</p>
+</header>
+
+<main>
+
+  <!-- BURGERS -->
+  <section id="sec-burgers">
+    <div class="sec-head"><h2><span class="mark">Nos</span> burgers</h2></div>
+    <div class="burger-grid" id="burger-list"></div>
+  </section>
+
+  <!-- DESSERTS -->
+  <section id="sec-desserts">
+    <div class="sec-head"><h2><span class="mark">Nos</span> desserts</h2></div>
+    <div id="dessert-list"></div>
+  </section>
+
+  <!-- SACHETS -->
+  <section id="sec-sachets">
+    <div class="sec-head"><h2><span class="mark">Nos</span> sachets</h2></div>
+    <div id="sachet-list"></div>
+  </section>
+
+  <!-- FRITES / BOISSONS / SIROPS -->
+  <section id="sec-sides">
+    <div class="sec-head"><h2><span class="mark">Frites &amp;</span> boissons</h2></div>
+    <div id="side-list"></div>
+  </section>
+
+</main>
+
+<footer class="bottom">
+  <span class="brand">Bon appétit !</span>
+  Burger Talaud 42 — commande en quelques clics.
+</footer>
+
+<!-- CART BAR -->
+<div class="cart-bar" id="cart-bar" onclick="openDrawer()">
+  <div>
+    <span class="small" id="cart-count-label">Panier vide</span>
+    <span id="cart-total-label">0,00 €</span>
+  </div>
+  <span class="cta">Voir le panier</span>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>Votre panier</h2>
+    <button class="close-x" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body">
+    <p class="cart-empty">Votre panier est vide pour l'instant.</p>
+  </div>
+  <div class="drawer-foot">
+    <div class="total-row"><span>Total</span><b id="drawer-total">0,00 €</b></div>
+
+    <fieldset>
+      <div class="mode-toggle">
+        <label><input type="radio" name="mode" value="emporter" checked onchange="toggleAddr()"><span>À emporter</span></label>
+        <label><input type="radio" name="mode" value="livraison" onchange="toggleAddr()"><span>Livraison</span></label>
+      </div>
+
+      <label class="field-label" for="f-name">Nom</label>
+      <input type="text" id="f-name" placeholder="Ton prénom">
+
+      <label class="field-label" for="f-phone">Téléphone</label>
+      <input type="tel" id="f-phone" placeholder="06 12 34 56 78">
+
+      <div id="addr-wrap">
+        <label class="field-label" for="f-addr">Adresse de livraison</label>
+        <input type="text" id="f-addr" placeholder="Adresse complète">
+      </div>
+
+      <label class="field-label" for="f-note">Remarque (optionnel)</label>
+      <textarea id="f-note" rows="2" placeholder="Ex: sans oignon, sonner à l'interphone..."></textarea>
+    </fieldset>
+
+    <button class="send-btn" id="send-btn" onclick="payOrder()" disabled>Payer maintenant</button>
+    <p class="foot-note" id="pay-note">Paiement sécurisé par carte bancaire (Stripe).</p>
+  </div>
+</div>
+
+<script>
+/* ============ DONNÉES DU MENU ============ */
+const SAUCES = ["Sauce maison", "Ketchup", "Mayonnaise", "BBQ", "Samouraï", "Algérienne"];
+const CANNETTES = ["Coca-Cola", "Coca-Cola Zero", "Fanta", "Sprite", "Oasis"];
+const PARFUMS_DESSERT = ["Oreo", "Spéculos", "Cacao", "Nutella", "Pistache"];
+
+const BURGERS = [
+  { id:"classique", name:"Le Classique", price:4.00,
+    desc:["Steak normal","Cheddar","Sauce maison ou au choix"], sauceChoice:true },
+  { id:"gourmand", name:"Le Gourmand", price:6.50,
+    desc:["3 steaks","Bacon","Cheddar","Oignon caramélisée","Sauce maison ou au choix"], sauceChoice:true },
+  { id:"fondant", name:"Le Fondant", price:6.00,
+    desc:["2 steaks","Pomme de terre","Raclette"], sauceChoice:false },
+  { id:"rechauffement", name:"Le Réchauffement", price:7.00,
+    desc:["Boursin","3 steaks","Sauce au choix ou maison"], sauceChoice:true },
+];
+
+const DESSERTS = [
+  { id:"verrine", name:"Verrine maison", price:3.50, flavorChoice:true },
+  { id:"cheesecake", name:"Cheesecake Oreo", price:3.50, flavorChoice:false },
+];
+
+const SACHETS = [
+  { id:"smarties", name:"Smarties", price:2.50 },
+  { id:"snickers", name:"Snickers", price:2.50 },
+  { id:"mars", name:"Mars", price:2.50 },
+  { id:"lion", name:"Lion", price:2.50 },
+];
+
+const SIDES = [
+  { id:"frites", name:"Baraquette de frites", price:2.50 },
+  { id:"cannette", name:"Cannette au choix", price:1.80, flavorList:CANNETTES },
+  { id:"sirop-bleu", name:"Sirop maison bleu", price:1.50 },
+  { id:"sirop-rouge", name:"Sirop maison rouge", price:1.50 },
+];
+
+/* ============ ETAT DU PANIER (en mémoire, pas de stockage persistant) ============ */
+let cart = []; // { key, name, price, qty, option }
+
+function money(n){ return n.toFixed(2).replace(".", ",") + " €"; }
+
+function addToCart(name, price, option){
+  const key = name + "|" + (option || "");
+  const existing = cart.find(c => c.key === key);
+  if(existing){ existing.qty += 1; }
+  else { cart.push({ key, name, price, qty:1, option }); }
+  renderCart();
+  pulseBar();
+}
+
+function changeQty(key, delta){
+  const item = cart.find(c => c.key === key);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0){ cart = cart.filter(c => c.key !== key); }
+  renderCart();
+}
+
+function cartTotal(){
+  return cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+}
+
+function pulseBar(){
+  const bar = document.getElementById("cart-bar");
+  bar.style.transform = "scale(1.02)";
+  setTimeout(()=> bar.style.transform = "scale(1)", 120);
+}
+
+function renderCart(){
+  const totalCount = cart.reduce((s,c)=>s+c.qty,0);
+  document.getElementById("cart-count-label").textContent =
+    totalCount === 0 ? "Panier vide" : totalCount + " article" + (totalCount>1?"s":"");
+  document.getElementById("cart-total-label").textContent = money(cartTotal());
+  document.getElementById("drawer-total").textContent = money(cartTotal());
+
+  const body = document.getElementById("drawer-body");
+  if(cart.length === 0){
+    body.innerHTML = '<p class="cart-empty">Votre panier est vide pour l\'instant.</p>';
+  } else {
+    body.innerHTML = cart.map(c => `
+      <div class="cart-line">
+        <div class="info">
+          <b>${c.name}</b>
+          ${c.option ? `<span class="meta">${c.option}</span>` : ""}
+          <span class="meta">${money(c.price)} / unité</span>
+        </div>
+        <div class="qty-ctrl">
+          <button onclick="changeQty('${c.key}', -1)">−</button>
+          <span>${c.qty}</span>
+          <button onclick="changeQty('${c.key}', 1)">+</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("send-btn").disabled = cart.length === 0;
+}
+
+/* ============ DRAWER ============ */
+function openDrawer(){
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+}
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+}
+function toggleAddr(){
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  document.getElementById("addr-wrap").style.display = mode === "livraison" ? "block" : "none";
+}
+
+/* ============ PAIEMENT ============ */
+async function payOrder(){
+  const name = document.getElementById("f-name").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  const addr = document.getElementById("f-addr").value.trim();
+  const note = document.getElementById("f-note").value.trim();
+  const btn = document.getElementById("send-btn");
+  const noteEl = document.getElementById("pay-note");
+
+  if(!name || !phone){
+    alert("Merci d'indiquer ton nom et ton numéro de téléphone avant de payer.");
+    return;
+  }
+  if(mode === "livraison" && !addr){
+    alert("Merci d'indiquer l'adresse de livraison.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Redirection vers le paiement...";
+
+  try{
+    const res = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cart,
+        customer: { name, phone, mode, address: addr, note },
+      }),
+    });
+    const data = await res.json();
+    if(!res.ok || !data.url){
+      throw new Error(data.error || "Le serveur de paiement n'a pas répondu correctement.");
+    }
+    window.location.href = data.url;
+  } catch(err){
+    noteEl.textContent = "Erreur au moment du paiement : " + err.message;
+    btn.disabled = false;
+    btn.textContent = "Payer maintenant";
+  }
+}
+
+/* ============ RENDU DU MENU ============ */
+function renderBurgers(){
+  const el = document.getElementById("burger-list");
+  el.innerHTML = BURGERS.map(b => `
+    <div class="burger-card">
+      <div>
+        <h3>${b.name}</h3>
+        <ul>${b.desc.map(d=>`<li>${d}</li>`).join("")}</ul>
+        <div class="row-buy">
+          ${b.sauceChoice ? `<select class="opt" id="opt-${b.id}">${SAUCES.map(s=>`<option>${s}</option>`).join("")}</select>` : ""}
+          <button class="add" onclick="addToCart('${b.name}', ${b.price}, ${b.sauceChoice ? `document.getElementById('opt-${b.id}').value` : "null"})">Ajouter</button>
+        </div>
+      </div>
+      <div class="price-tag">${money(b.price)}</div>
+    </div>
+  `).join("");
+}
+
+function renderDesserts(){
+  const el = document.getElementById("dessert-list");
+  el.innerHTML = DESSERTS.map(d => `
+    <div class="row-item">
+      <div class="name">${d.name}${d.flavorChoice ? "" : `<span class="sub">Fait maison</span>`}</div>
+      ${d.flavorChoice ? `<select class="opt" id="opt-${d.id}">${PARFUMS_DESSERT.map(p=>`<option>${p}</option>`).join("")}</select>` : ""}
+      <div class="price">${money(d.price)}</div>
+      <button class="add" onclick="addToCart('${d.name}', ${d.price}, ${d.flavorChoice ? `document.getElementById('opt-${d.id}').value` : "null"})">Ajouter</button>
+    </div>
+  `).join("");
+}
+
+function renderSachets(){
+  const el = document.getElementById("sachet-list");
+  el.innerHTML = SACHETS.map(s => `
+    <div class="row-item">
+      <div class="name">${s.name}</div>
+      <div class="price">${money(s.price)}</div>
+      <button class="add" onclick="addToCart('${s.name}', ${s.price}, null)">Ajouter</button>
+    </div>
+  `).join("");
+}
+
+function renderSides(){
+  const el = document.getElementById("side-list");
+  el.innerHTML = SIDES.map(s => `
+    <div class="row-item">
+      <div class="name">${s.name}</div>
+      ${s.flavorList ? `<select class="opt" id="opt-${s.id}">${s.flavorList.map(f=>`<option>${f}</option>`).join("")}</select>` : ""}
+      <div class="price">${money(s.price)}</div>
+      <button class="add" onclick="addToCart('${s.name}', ${s.price}, ${s.flavorList ? `document.getElementById('opt-${s.id}').value` : "null"})">Ajouter</button>
+    </div>
+  `).join("");
+}
+
+renderBurgers();
+renderDesserts();
+renderSachets();
+renderSides();
+renderCart();
+</script>
+
+</body>
+</html>
